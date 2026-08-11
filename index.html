@@ -312,54 +312,64 @@ function guardarTroballa() {
     }
 
 
-    const especie =
-        document.getElementById("especie").value;
+    const troballa = {
+
+        id: Date.now(),
+
+        data:
+            document.getElementById("data").value,
+
+        hora:
+            document.getElementById("hora").value,
+
+        latitud:
+            latitud,
+
+        longitud:
+            longitud,
+
+        especie:
+            document.getElementById("especie").value,
+
+        quantitat:
+            Number(
+                document.getElementById("quantitat").value
+            ),
+
+        cucs:
+            document.getElementById("cucs").value,
+
+        comentari:
+            document.getElementById("comentari").value
+
+    };
 
 
-    const quantitat =
-        document.getElementById("quantitat").value;
+    let troballes =
+        JSON.parse(
+            localStorage.getItem("troballes") || "[]"
+        );
 
 
-    const cucs =
-        document.getElementById("cucs").value;
+    troballes.push(troballa);
 
 
-    const data =
-        document.getElementById("data").value;
-
-
-    const hora =
-        document.getElementById("hora").value;
-
-
-    const comentari =
-        document.getElementById("comentari").value;
-
-
-    console.log({
-
-        data: data,
-
-        hora: hora,
-
-        latitud: latitud,
-
-        longitud: longitud,
-
-        especie: especie,
-
-        quantitat: quantitat,
-
-        cucs: cucs,
-
-        comentari: comentari
-
-    });
+    localStorage.setItem(
+        "troballes",
+        JSON.stringify(troballes)
+    );
 
 
     missatge.innerHTML =
-        "🍄 <b>Troballa preparada!</b><br>" +
-        "Ara construirem el sistema de desament.";
+        "🍄 <b>Troballa guardada!</b><br><br>" +
+
+        "📅 " + troballa.data + "<br>" +
+
+        "🕐 " + troballa.hora + "<br>" +
+
+        "🍄 " + troballa.especie + "<br>" +
+
+        "🔢 " + troballa.quantitat + " unitats";
 
 }
 
