@@ -9,7 +9,7 @@
       content="width=device-width, initial-scale=1.0">
 
 <title>Oracle Boletaire</title>
-
+<link rel="manifest" href="./manifest.json">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
@@ -685,7 +685,34 @@ mostrarHistorial();
 mostrarMapa();
 
 </script>
+<script>
 
+if ("serviceWorker" in navigator) {
+
+    window.addEventListener("load", function() {
+
+        navigator.serviceWorker.register("./sw.js")
+            .then(function() {
+
+                console.log(
+                    "Oracle Boletaire: mode offline preparat"
+                );
+
+            })
+            .catch(function(error) {
+
+                console.log(
+                    "Error Service Worker:",
+                    error
+                );
+
+            });
+
+    });
+
+}
+
+</script>
 
 </body>
 
