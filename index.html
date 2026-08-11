@@ -151,7 +151,14 @@ Ubicació encara no obtinguda.
     readonly
 >
 
+<label>📷 Fotografia</label>
 
+<input
+    id="foto"
+    type="file"
+    accept="image/*"
+    capture="environment"
+>
 <label>💬 Comentari</label>
 
 <textarea
@@ -295,15 +302,134 @@ function obtenirGPS() {
 
 
 /* GUARDAR */
+function comprimirFoto(fitxer) {
 
-function guardarTroballa() {
+    return new Promise(function(resolve) {
+
+        const lector =
+            new FileReader();
+
+
+        lector.onload = function(event) {
+
+            const imatge =
+                new Image();
+
+
+            imatge.onload = function() {
+
+                const MAXIM = 1200;
+
+                let ample =
+                    imatge.width;
+
+                let alt =
+                    imatge.height;
+
+
+                if (ample > alt && ample > MAXIM) {
+
+                    alt =
+                        alt * MAXIM / ample;
+
+                    ample =
+                        MAXIM;
+
+                }
+
+
+                if (alt > ample && alt > MAXIM) {
+
+                    ample =
+                        ample * MAXIM / alt;
+
+                    alt =
+                        MAXIM;
+
+                }
+
+
+                const canvas =
+                    document.createElement("canvas");
+
+
+                canvas.width =
+                    ample;
+
+                canvas.height =
+                    alt;
+
+
+                const context =
+                    canvas.getContext("2d");
+
+
+                context.drawImage(
+                    imatge,
+                    0,
+                    0,
+                    ample,
+                    alt
+                );
+
+
+                const fotoReduida =
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.7
+                    );
+
+
+                resolve(fotoReduida);
+
+            };
+
+
+            imatge.src =
+                event.target.result;
+
+        };
+
+
+        lector.readAsDataURL(fitxer);
+
+    });
+
+}
+async function guardarTroballa() {
+
+    const missatge =
+        document.getElementById("missatge");
+
 
     if (latitud === null) {
 
-        document.getElementById("missatge").innerHTML =
+        missatge.innerHTML =
             "⚠️ Primer obtén la ubicació GPS.";
 
         return;
+
+    }
+
+
+    const fotoInput =
+        document.getElementById("foto");
+
+    const fitxerFoto =
+        fotoInput.files[0];
+
+
+    missatge.innerHTML =
+        "⏳ Guardant la troballa...";
+
+
+    let foto = null;
+
+
+    if (fitxerFoto) {
+
+        foto =
+            await comprimirFoto(fitxerFoto);
 
     }
 
@@ -336,7 +462,10 @@ function guardarTroballa() {
             document.getElementById("cucs").value,
 
         comentari:
-            document.getElementById("comentari").value
+            document.getElementById("comentari").value,
+
+        foto:
+            foto
 
     };
 
@@ -356,9 +485,13 @@ function guardarTroballa() {
     );
 
 
-    document.getElementById("missatge").innerHTML =
-        "🍄 <b>Troballa guardada!</b>";
+    missatge.innerHTML =
+        "🍄 <b>Troballa guardada!</b><br><br>" +
+        "📍 GPS ✓<br>" +
+        "📷 " +
+        (foto ? "Foto guardada ✓" : "Sense foto");
 
+    
     mostrarHistorial();
 
     mostrarMapa();
