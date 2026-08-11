@@ -2,6 +2,7 @@
 <html lang="ca">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta name="viewport"
@@ -23,21 +24,25 @@
             margin-top: 10px;
         }
 
-        .botons {
-            display: grid;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
         button {
+            width: 100%;
             font-size: 20px;
             padding: 18px;
+            margin-top: 15px;
             border-radius: 12px;
             border: none;
             background: white;
         }
 
+        #gps {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+        }
+
     </style>
+
 </head>
 
 
@@ -45,29 +50,99 @@
 
     <h1>🍄 Oracle Boletaire</h1>
 
-    <p>
-        El teu assistent per al bosc
-    </p>
+    <p>Nova troballa</p>
 
-    <div class="botons">
 
-        <button>
-            🗺️ Les meves zones
-        </button>
+    <button onclick="obtenirGPS()">
 
-        <button>
-            ➕ Nova troballa
-        </button>
+        📍 Obtenir la meva ubicació
 
-        <button>
-            📊 Condicions
-        </button>
+    </button>
 
-        <button>
-            📜 Historial
-        </button>
+
+    <div id="gps">
+
+        Ubicació encara no obtinguda.
 
     </div>
+
+
+<script>
+
+function obtenirGPS() {
+
+    const resultat =
+        document.getElementById("gps");
+
+
+    if (!navigator.geolocation) {
+
+        resultat.innerHTML =
+            "❌ Aquest dispositiu no permet GPS.";
+
+        return;
+
+    }
+
+
+    resultat.innerHTML =
+        "📍 Buscant la ubicació...";
+
+
+    navigator.geolocation.getCurrentPosition(
+
+        function(posicio) {
+
+            const lat =
+                posicio.coords.latitude;
+
+            const lon =
+                posicio.coords.longitude;
+
+
+            resultat.innerHTML =
+
+                "📍 Ubicació trobada<br><br>" +
+
+                "Latitud: " +
+                lat.toFixed(6) +
+
+                "<br>" +
+
+                "Longitud: " +
+                lon.toFixed(6);
+
+        },
+
+
+        function(error) {
+
+            resultat.innerHTML =
+
+                "❌ No s'ha pogut obtenir " +
+                "la ubicació.<br><br>" +
+
+                "Comprova que has donat " +
+                "permís de localització.";
+
+        },
+
+        {
+
+            enableHighAccuracy: true,
+
+            timeout: 15000,
+
+            maximumAge: 0
+
+        }
+
+    );
+
+}
+
+</script>
+
 
 </body>
 
