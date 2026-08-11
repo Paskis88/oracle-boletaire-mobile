@@ -182,7 +182,15 @@
 
     </div>
 
+<div class="bloc">
 
+    <h2>📜 Historial</h2>
+
+    <div id="historial">
+        Carregant troballes...
+    </div>
+
+</div>
 <script>
 
 let latitud = null;
@@ -372,7 +380,88 @@ function guardarTroballa() {
         "🔢 " + troballa.quantitat + " unitats";
 
 }
+function mostrarHistorial() {
 
+    const contenidor =
+        document.getElementById("historial");
+
+
+    let troballes =
+        JSON.parse(
+            localStorage.getItem("troballes") || "[]"
+        );
+
+
+    if (troballes.length === 0) {
+
+        contenidor.innerHTML =
+            "🍄 Encara no hi ha troballes.";
+
+        return;
+
+    }
+
+
+    troballes =
+        troballes.reverse();
+
+
+    contenidor.innerHTML = "";
+
+
+    troballes.forEach(function(troballa) {
+
+        const element =
+            document.createElement("div");
+
+
+        element.className = "bloc";
+
+
+        element.innerHTML =
+
+            "<b>🍄 " +
+            troballa.especie +
+            "</b><br><br>" +
+
+            "📅 " +
+            troballa.data +
+            " · " +
+            troballa.hora +
+            "<br>" +
+
+            "🔢 " +
+            troballa.quantitat +
+            " unitats<br>" +
+
+            "🪱 " +
+            troballa.cucs +
+            "<br><br>" +
+
+            "📍 " +
+            troballa.latitud.toFixed(6) +
+            ", " +
+            troballa.longitud.toFixed(6);
+
+
+        if (troballa.comentari) {
+
+            element.innerHTML +=
+
+                "<br><br>💬 " +
+                troballa.comentari;
+
+        }
+
+
+        contenidor.appendChild(element);
+
+    });
+
+}
+
+
+mostrarHistorial();
 </script>
 
 
