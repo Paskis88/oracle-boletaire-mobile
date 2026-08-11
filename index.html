@@ -6,8 +6,7 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width,
-                   initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
     <title>Oracle Boletaire</title>
 
@@ -24,21 +23,52 @@
             margin-top: 10px;
         }
 
+        .bloc {
+            background: white;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 12px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        select,
+        input,
+        textarea {
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 18px;
+            padding: 12px;
+            margin-top: 6px;
+            border-radius: 8px;
+            border: 1px solid #bbb;
+        }
+
         button {
             width: 100%;
-            font-size: 20px;
-            padding: 18px;
+            font-size: 19px;
+            padding: 16px;
             margin-top: 15px;
             border-radius: 12px;
             border: none;
             background: white;
         }
 
+        .principal {
+            font-weight: bold;
+        }
+
         #gps {
-            margin-top: 20px;
-            padding: 15px;
-            background: white;
-            border-radius: 12px;
+            margin-top: 10px;
+        }
+
+        #missatge {
+            margin-top: 15px;
+            font-weight: bold;
         }
 
     </style>
@@ -50,24 +80,149 @@
 
     <h1>🍄 Oracle Boletaire</h1>
 
-    <p>Nova troballa</p>
+    <p class="principal">
+        ➕ Nova troballa
+    </p>
 
 
-    <button onclick="obtenirGPS()">
+    <div class="bloc">
 
-        📍 Obtenir la meva ubicació
+        <label>📍 Ubicació</label>
 
-    </button>
+        <button onclick="obtenirGPS()">
+
+            📍 OBTENIR LA MEVA UBICACIÓ
+
+        </button>
+
+        <div id="gps">
+
+            Ubicació encara no obtinguda.
+
+        </div>
+
+    </div>
 
 
-    <div id="gps">
+    <div class="bloc">
 
-        Ubicació encara no obtinguda.
+        <label>🍄 Espècie</label>
+
+        <select id="especie">
+
+            <option>Cep</option>
+            <option>Rovelló</option>
+            <option>Llenega</option>
+            <option>Fredolic</option>
+            <option>Camagroc</option>
+            <option>Altres</option>
+
+        </select>
+
+
+        <label>🔢 Quantitat</label>
+
+        <input
+            id="quantitat"
+            type="number"
+            min="1"
+            value="1"
+        >
+
+
+        <label>🪱 Estat</label>
+
+        <select id="cucs">
+
+            <option>Cap</option>
+            <option>Alguns</option>
+            <option>Molts</option>
+
+        </select>
+
+
+        <label>📅 Data</label>
+
+        <input
+            id="data"
+            type="text"
+            readonly
+        >
+
+
+        <label>🕐 Hora</label>
+
+        <input
+            id="hora"
+            type="text"
+            readonly
+        >
+
+
+        <label>💬 Comentari</label>
+
+        <textarea
+            id="comentari"
+            rows="4"
+            placeholder="Notes sobre la troballa..."
+        ></textarea>
+
+
+        <button
+            class="principal"
+            onclick="guardarTroballa()"
+        >
+
+            💾 DESAR TROBALLA
+
+        </button>
+
+
+        <div id="missatge"></div>
 
     </div>
 
 
 <script>
+
+let latitud = null;
+let longitud = null;
+
+
+/* DATA I HORA */
+
+function actualitzarDataHora() {
+
+    const ara = new Date();
+
+    const dia =
+        String(ara.getDate()).padStart(2, "0");
+
+    const mes =
+        String(ara.getMonth() + 1).padStart(2, "0");
+
+    const any =
+        ara.getFullYear();
+
+    const hora =
+        String(ara.getHours()).padStart(2, "0");
+
+    const minuts =
+        String(ara.getMinutes()).padStart(2, "0");
+
+    document.getElementById("data").value =
+        dia + "/" + mes + "/" + any;
+
+    document.getElementById("hora").value =
+        hora + ":" + minuts;
+
+}
+
+
+actualitzarDataHora();
+
+
+/* GPS */
 
 function obtenirGPS() {
 
@@ -93,24 +248,24 @@ function obtenirGPS() {
 
         function(posicio) {
 
-            const lat =
+            latitud =
                 posicio.coords.latitude;
 
-            const lon =
+            longitud =
                 posicio.coords.longitude;
 
 
             resultat.innerHTML =
 
-                "📍 Ubicació trobada<br><br>" +
+                "📍 <b>Ubicació obtinguda ✓</b><br><br>" +
 
                 "Latitud: " +
-                lat.toFixed(6) +
+                latitud.toFixed(6) +
 
                 "<br>" +
 
                 "Longitud: " +
-                lon.toFixed(6);
+                longitud.toFixed(6);
 
         },
 
@@ -119,13 +274,10 @@ function obtenirGPS() {
 
             resultat.innerHTML =
 
-                "❌ No s'ha pogut obtenir " +
-                "la ubicació.<br><br>" +
-
-                "Comprova que has donat " +
-                "permís de localització.";
+                "❌ No s'ha pogut obtenir la ubicació.";
 
         },
+
 
         {
 
@@ -138,6 +290,76 @@ function obtenirGPS() {
         }
 
     );
+
+}
+
+
+/* GUARDAR */
+
+function guardarTroballa() {
+
+    const missatge =
+        document.getElementById("missatge");
+
+
+    if (latitud === null) {
+
+        missatge.innerHTML =
+            "⚠️ Primer has d'obtenir la ubicació GPS.";
+
+        return;
+
+    }
+
+
+    const especie =
+        document.getElementById("especie").value;
+
+
+    const quantitat =
+        document.getElementById("quantitat").value;
+
+
+    const cucs =
+        document.getElementById("cucs").value;
+
+
+    const data =
+        document.getElementById("data").value;
+
+
+    const hora =
+        document.getElementById("hora").value;
+
+
+    const comentari =
+        document.getElementById("comentari").value;
+
+
+    console.log({
+
+        data: data,
+
+        hora: hora,
+
+        latitud: latitud,
+
+        longitud: longitud,
+
+        especie: especie,
+
+        quantitat: quantitat,
+
+        cucs: cucs,
+
+        comentari: comentari
+
+    });
+
+
+    missatge.innerHTML =
+        "🍄 <b>Troballa preparada!</b><br>" +
+        "Ara construirem el sistema de desament.";
 
 }
 
