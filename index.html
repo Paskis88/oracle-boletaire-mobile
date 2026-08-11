@@ -1,219 +1,204 @@
 <!DOCTYPE html>
 <html lang="ca">
-<link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
 
-<script
-    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
-</script>
 <head>
 
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-    <title>Oracle Boletaire</title>
+<title>Oracle Boletaire</title>
 
-    <style>
+<link rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background: #f4f1e8;
-        }
+<style>
 
-        h1 {
-            margin-top: 10px;
-        }
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background: #f4f1e8;
+}
 
-        .bloc {
-            background: white;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 12px;
-        }
+h1 {
+    margin-top: 10px;
+}
 
-        label {
-            display: block;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+.bloc {
+    background: white;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 12px;
+}
 
-        select,
-        input,
-        textarea {
-            width: 100%;
-            box-sizing: border-box;
-            font-size: 18px;
-            padding: 12px;
-            margin-top: 6px;
-            border-radius: 8px;
-            border: 1px solid #bbb;
-        }
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
 
-        button {
-            width: 100%;
-            font-size: 19px;
-            padding: 16px;
-            margin-top: 15px;
-            border-radius: 12px;
-            border: none;
-            background: white;
-        }
+select,
+input,
+textarea {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 18px;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 8px;
+    border: 1px solid #bbb;
+}
 
-        .principal {
-            font-weight: bold;
-        }
+button {
+    width: 100%;
+    font-size: 19px;
+    padding: 16px;
+    margin-top: 15px;
+    border-radius: 12px;
+    border: none;
+    background: white;
+}
 
-        #gps {
-            margin-top: 10px;
-        }
+#mapa {
+    height: 400px;
+    width: 100%;
+    border-radius: 12px;
+}
 
-        #missatge {
-            margin-top: 15px;
-            font-weight: bold;
-        }
+#gps,
+#missatge,
+#historial {
+    margin-top: 15px;
+}
 
-    </style>
+</style>
 
 </head>
 
 
 <body>
 
-    <h1>🍄 Oracle Boletaire</h1>
+<h1>🍄 Oracle Boletaire</h1>
 
-    <p class="principal">
-        ➕ Nova troballa
-    </p>
-
-
-    <div class="bloc">
-
-        <label>📍 Ubicació</label>
-
-        <button onclick="obtenirGPS()">
-
-            📍 OBTENIR LA MEVA UBICACIÓ
-
-        </button>
-
-        <div id="gps">
-
-            Ubicació encara no obtinguda.
-
-        </div>
-
-    </div>
-
-
-    <div class="bloc">
-
-        <label>🍄 Espècie</label>
-
-        <select id="especie">
-
-            <option>Cep</option>
-            <option>Rovelló</option>
-            <option>Llenega</option>
-            <option>Fredolic</option>
-            <option>Camagroc</option>
-            <option>Altres</option>
-
-        </select>
-
-
-        <label>🔢 Quantitat</label>
-
-        <input
-            id="quantitat"
-            type="number"
-            min="1"
-            value="1"
-        >
-
-
-        <label>🪱 Estat</label>
-
-        <select id="cucs">
-
-            <option>Cap</option>
-            <option>Alguns</option>
-            <option>Molts</option>
-
-        </select>
-
-
-        <label>📅 Data</label>
-
-        <input
-            id="data"
-            type="text"
-            readonly
-        >
-
-
-        <label>🕐 Hora</label>
-
-        <input
-            id="hora"
-            type="text"
-            readonly
-        >
-
-
-        <label>💬 Comentari</label>
-
-        <textarea
-            id="comentari"
-            rows="4"
-            placeholder="Notes sobre la troballa..."
-        ></textarea>
-
-
-        <button
-            class="principal"
-            onclick="guardarTroballa()"
-        >
-
-            💾 DESAR TROBALLA
-
-        </button>
-
-
-        <div id="missatge"></div>
-
-    </div>
 <div class="bloc">
 
-    <h2>🗺️ Mapa de troballes</h2>
+<h2>📍 Nova troballa</h2>
 
-    <div
-        id="mapa"
-        style="
-            height: 400px;
-            width: 100%;
-            border-radius: 12px;
-        ">
-    </div>
+<button onclick="obtenirGPS()">
+
+📍 OBTENIR LA MEVA UBICACIÓ
+
+</button>
+
+<div id="gps">
+
+Ubicació encara no obtinguda.
 
 </div>
+
+
+<label>🍄 Espècie</label>
+
+<select id="especie">
+
+<option>Cep</option>
+<option>Rovelló</option>
+<option>Llenega</option>
+<option>Fredolic</option>
+<option>Camagroc</option>
+<option>Altres</option>
+
+</select>
+
+
+<label>🔢 Quantitat</label>
+
+<input
+    id="quantitat"
+    type="number"
+    min="1"
+    value="1"
+>
+
+
+<label>🪱 Estat</label>
+
+<select id="cucs">
+
+<option>Cap</option>
+<option>Alguns</option>
+<option>Molts</option>
+
+</select>
+
+
+<label>📅 Data</label>
+
+<input
+    id="data"
+    type="text"
+    readonly
+>
+
+
+<label>🕐 Hora</label>
+
+<input
+    id="hora"
+    type="text"
+    readonly
+>
+
+
+<label>💬 Comentari</label>
+
+<textarea
+    id="comentari"
+    rows="4"
+></textarea>
+
+
+<button onclick="guardarTroballa()">
+
+💾 DESAR TROBALLA
+
+</button>
+
+
+<div id="missatge"></div>
+
+</div>
+
+
 <div class="bloc">
 
-    <h2>📜 Historial</h2>
+<h2>🗺️ Mapa de troballes</h2>
 
-    <div id="historial">
-        Carregant troballes...
-    </div>
+<div id="mapa"></div>
 
 </div>
+
+
+<div class="bloc">
+
+<h2>📜 Historial</h2>
+
+<div id="historial"></div>
+
+</div>
+
+
+<script
+src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
+
+
 <script>
 
 let latitud = null;
+
 let longitud = null;
 
 
@@ -258,18 +243,8 @@ function obtenirGPS() {
         document.getElementById("gps");
 
 
-    if (!navigator.geolocation) {
-
-        resultat.innerHTML =
-            "❌ Aquest dispositiu no permet GPS.";
-
-        return;
-
-    }
-
-
     resultat.innerHTML =
-        "📍 Buscant la ubicació...";
+        "📍 Buscant ubicació...";
 
 
     navigator.geolocation.getCurrentPosition(
@@ -297,15 +272,12 @@ function obtenirGPS() {
 
         },
 
-
-        function(error) {
+        function() {
 
             resultat.innerHTML =
-
-                "❌ No s'ha pogut obtenir la ubicació.";
+                "❌ No s'ha pogut obtenir el GPS.";
 
         },
-
 
         {
 
@@ -326,14 +298,10 @@ function obtenirGPS() {
 
 function guardarTroballa() {
 
-    const missatge =
-        document.getElementById("missatge");
-
-
     if (latitud === null) {
 
-        missatge.innerHTML =
-            "⚠️ Primer has d'obtenir la ubicació GPS.";
+        document.getElementById("missatge").innerHTML =
+            "⚠️ Primer obtén la ubicació GPS.";
 
         return;
 
@@ -388,18 +356,18 @@ function guardarTroballa() {
     );
 
 
-    missatge.innerHTML =
-        "🍄 <b>Troballa guardada!</b><br><br>" +
+    document.getElementById("missatge").innerHTML =
+        "🍄 <b>Troballa guardada!</b>";
 
-        "📅 " + troballa.data + "<br>" +
+    mostrarHistorial();
 
-        "🕐 " + troballa.hora + "<br>" +
-
-        "🍄 " + troballa.especie + "<br>" +
-
-        "🔢 " + troballa.quantitat + " unitats";
+    mostrarMapa();
 
 }
+
+
+/* HISTORIAL */
+
 function mostrarHistorial() {
 
     const contenidor =
@@ -422,59 +390,143 @@ function mostrarHistorial() {
     }
 
 
-    troballes =
-        troballes.reverse();
+    contenidor.innerHTML = "";
+
+
+    troballes
+        .slice()
+        .reverse()
+        .forEach(function(t) {
+
+            const element =
+                document.createElement("div");
+
+            element.className = "bloc";
+
+            element.innerHTML =
+
+                "<b>🍄 " +
+                t.especie +
+                "</b><br><br>" +
+
+                "📅 " +
+                t.data +
+                " · " +
+                t.hora +
+                "<br>" +
+
+                "🔢 " +
+                t.quantitat +
+                " unitats<br>" +
+
+                "🪱 " +
+                t.cucs +
+                "<br><br>" +
+
+                "📍 " +
+                t.latitud.toFixed(6) +
+                ", " +
+                t.longitud.toFixed(6);
+
+
+            if (t.comentari) {
+
+                element.innerHTML +=
+                    "<br><br>💬 " +
+                    t.comentari;
+
+            }
+
+
+            contenidor.appendChild(element);
+
+        });
+
+}
+
+
+/* MAPA */
+
+function mostrarMapa() {
+
+    const contenidor =
+        document.getElementById("mapa");
 
 
     contenidor.innerHTML = "";
 
 
-    troballes.forEach(function(troballa) {
-
-        const element =
-            document.createElement("div");
-
-
-        element.className = "bloc";
+    let troballes =
+        JSON.parse(
+            localStorage.getItem("troballes") || "[]"
+        );
 
 
-        element.innerHTML =
-
-            "<b>🍄 " +
-            troballa.especie +
-            "</b><br><br>" +
-
-            "📅 " +
-            troballa.data +
-            " · " +
-            troballa.hora +
-            "<br>" +
-
-            "🔢 " +
-            troballa.quantitat +
-            " unitats<br>" +
-
-            "🪱 " +
-            troballa.cucs +
-            "<br><br>" +
-
-            "📍 " +
-            troballa.latitud.toFixed(6) +
-            ", " +
-            troballa.longitud.toFixed(6);
+    let centre = [42.3, 1.2];
 
 
-        if (troballa.comentari) {
+    if (troballes.length > 0) {
 
-            element.innerHTML +=
+        centre = [
 
-                "<br><br>💬 " +
-                troballa.comentari;
+            troballes[0].latitud,
+
+            troballes[0].longitud
+
+        ];
+
+    }
+
+
+    const mapa =
+        L.map("mapa").setView(
+            centre,
+            12
+        );
+
+
+    L.tileLayer(
+
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+
+        {
+
+            attribution:
+                "&copy; OpenStreetMap contributors"
 
         }
 
+    ).addTo(mapa);
 
-        contenidor.appendChild(element);
+
+    troballes.forEach(function(t) {
+
+        const marcador =
+            L.marker([
+                t.latitud,
+                t.longitud
+            ]).addTo(mapa);
+
+
+        marcador.bindPopup(
+
+            "<b>🍄 " +
+            t.especie +
+            "</b><br><br>" +
+
+            "📅 " +
+            t.data +
+            "<br>" +
+
+            "🕐 " +
+            t.hora +
+            "<br>" +
+
+            "🔢 " +
+            t.quantitat +
+            " unitats"
+
+        );
 
     });
 
@@ -482,88 +534,9 @@ function mostrarHistorial() {
 
 
 mostrarHistorial();
-function mostrarMapa() {
-
-    let troballes =
-        JSON.parse(
-            localStorage.getItem("troballes") || "[]"
-        );
-
-    const mapa =
-        L.map("mapa");
-
-
-    L.tileLayer(
-        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-            attribution:
-                '&copy; OpenStreetMap contributors'
-        }
-    ).addTo(mapa);
-
-
-    if (troballes.length === 0) {
-
-        mapa.setView(
-            [42.3, 1.2],
-            10
-        );
-
-        return;
-
-    }
-
-
-    const primera =
-        troballes[0];
-
-
-    mapa.setView(
-        [
-            primera.latitud,
-            primera.longitud
-        ],
-        14
-    );
-
-
-    troballes.forEach(
-        function(troballa) {
-
-            const marcador =
-                L.marker([
-                    troballa.latitud,
-                    troballa.longitud
-                ]).addTo(mapa);
-
-
-            marcador.bindPopup(
-
-                "<b>🍄 " +
-                troballa.especie +
-                "</b><br><br>" +
-
-                "📅 " +
-                troballa.data +
-                "<br>" +
-
-                "🕐 " +
-                troballa.hora +
-                "<br>" +
-
-                "🔢 " +
-                troballa.quantitat +
-                " unitats"
-
-            );
-
-        }
-    );
-
-}
-
 
 mostrarMapa();
+
 </script>
 
 
