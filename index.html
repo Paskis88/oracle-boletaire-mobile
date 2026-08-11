@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ca">
+<link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
 
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 <head>
 
     <meta charset="UTF-8">
@@ -181,7 +188,20 @@
         <div id="missatge"></div>
 
     </div>
+<div class="bloc">
 
+    <h2>🗺️ Mapa de troballes</h2>
+
+    <div
+        id="mapa"
+        style="
+            height: 400px;
+            width: 100%;
+            border-radius: 12px;
+        ">
+    </div>
+
+</div>
 <div class="bloc">
 
     <h2>📜 Historial</h2>
@@ -462,6 +482,88 @@ function mostrarHistorial() {
 
 
 mostrarHistorial();
+function mostrarMapa() {
+
+    let troballes =
+        JSON.parse(
+            localStorage.getItem("troballes") || "[]"
+        );
+
+    const mapa =
+        L.map("mapa");
+
+
+    L.tileLayer(
+        "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        {
+            attribution:
+                '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(mapa);
+
+
+    if (troballes.length === 0) {
+
+        mapa.setView(
+            [42.3, 1.2],
+            10
+        );
+
+        return;
+
+    }
+
+
+    const primera =
+        troballes[0];
+
+
+    mapa.setView(
+        [
+            primera.latitud,
+            primera.longitud
+        ],
+        14
+    );
+
+
+    troballes.forEach(
+        function(troballa) {
+
+            const marcador =
+                L.marker([
+                    troballa.latitud,
+                    troballa.longitud
+                ]).addTo(mapa);
+
+
+            marcador.bindPopup(
+
+                "<b>🍄 " +
+                troballa.especie +
+                "</b><br><br>" +
+
+                "📅 " +
+                troballa.data +
+                "<br>" +
+
+                "🕐 " +
+                troballa.hora +
+                "<br>" +
+
+                "🔢 " +
+                troballa.quantitat +
+                " unitats"
+
+            );
+
+        }
+    );
+
+}
+
+
+mostrarMapa();
 </script>
 
 
