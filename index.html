@@ -1,5 +1,37 @@
 <h1>🍄 Oracle Boletaire</h1>
 <p>🧪 VERSIÓ OFFLINE-REAL</p>
+
+<div id="oracleMenu" style="margin:20px 0;">
+
+    <h2>🔮 PRONÒSTIC</h2>
+
+    <p>
+        Què vols fer?
+    </p>
+
+    <button
+        onclick="mostrarPronosticZona()"
+        style="width:100%; padding:18px; margin:8px 0; font-size:18px;"
+    >
+        🧭 VULL ANAR AQUÍ
+        <br>
+        <small>Analitzar una zona que jo trio</small>
+    </button>
+
+
+    <button
+        onclick="mostrarMillorsZones()"
+        style="width:100%; padding:18px; margin:8px 0; font-size:18px;"
+    >
+        🔮 ON HAURIA D'ANAR?
+        <br>
+        <small>Buscar les zones amb millors condicions</small>
+    </button>
+
+</div>
+
+
+<div id="oracleResultat"></div>
 <!DOCTYPE html>
 <html lang="ca">
 
@@ -713,7 +745,67 @@ if ("serviceWorker" in navigator) {
     });
 
 }
+function mostrarPronosticZona() {
 
+    const resultat =
+        document.getElementById("oracleResultat");
+
+    resultat.innerHTML = `
+        <div style="
+            padding:20px;
+            margin-top:20px;
+            border-radius:12px;
+            background:#f4f1e8;
+        ">
+
+            <h2>🧭 VULL ANAR AQUÍ</h2>
+
+            <p>
+                Primer indica on vols anar.
+            </p>
+
+            <button onclick="obtenirGPS()">
+                📍 Utilitzar la meva ubicació
+            </button>
+
+            <p>
+                🔮 El pronòstic es calcularà
+                quan tinguem les dades del bolet
+                i les condicions del terreny.
+            </p>
+
+        </div>
+    `;
+}
+
+
+function mostrarMillorsZones() {
+
+    const resultat =
+        document.getElementById("oracleResultat");
+
+    resultat.innerHTML = `
+        <div style="
+            padding:20px;
+            margin-top:20px;
+            border-radius:12px;
+            background:#f4f1e8;
+        ">
+
+            <h2>🔮 ON HAURIA D'ANAR?</h2>
+
+            <p>
+                Estem preparant el motor de pronòstic.
+            </p>
+
+            <p>
+                Aviat l'Oracle buscarà les zones
+                amb les condicions més favorables.
+            </p>
+
+        </div>
+    `;
+}
 </script>
 
 </body>
