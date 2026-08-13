@@ -5,9 +5,7 @@
 
     <h2>🔮 PRONÒSTIC</h2>
 
-    <p>
-        Què vols fer?
-    </p>
+    <p>Què vols fer?</p>
 
     <button
         onclick="mostrarPronosticZona()"
@@ -18,18 +16,16 @@
         <small>Analitzar una zona que jo trio</small>
     </button>
 
-
     <button
         onclick="mostrarMillorsZones()"
         style="width:100%; padding:18px; margin:8px 0; font-size:18px;"
     >
         🔮 ON HAURIA D'ANAR?
         <br>
-        <small>Buscar les zones amb millors condicions</small>
+        <small>Buscar les millors oportunitats</small>
     </button>
 
 </div>
-
 
 <div id="oracleResultat"></div>
 <!DOCTYPE html>
@@ -747,10 +743,10 @@ if ("serviceWorker" in navigator) {
 }
 function mostrarPronosticZona() {
 
-    const resultat =
-        document.getElementById("oracleResultat");
+    const resultat = document.getElementById("oracleResultat");
 
     resultat.innerHTML = `
+
         <div style="
             padding:20px;
             margin-top:20px;
@@ -760,19 +756,40 @@ function mostrarPronosticZona() {
 
             <h2>🧭 VULL ANAR AQUÍ</h2>
 
-            <p>
-                Primer indica on vols anar.
-            </p>
+            <p><strong>Quin bolet vols buscar?</strong></p>
 
-            <button onclick="obtenirGPS()">
+            <select id="boletZona"
+                style="
+                    width:100%;
+                    padding:14px;
+                    font-size:17px;
+                    margin-bottom:15px;
+                ">
+
+                <option value="morchella_rotunda">
+                    🍄 Múrgola
+                </option>
+
+                <option value="craterellus_cornucopioides">
+                    🍄 Trompeta de la mort
+                </option>
+
+            </select>
+
+            <button
+                onclick="obtenirGPS()"
+                style="
+                    width:100%;
+                    padding:15px;
+                    font-size:17px;
+                "
+            >
                 📍 Utilitzar la meva ubicació
             </button>
 
-            <p>
-                🔮 El pronòstic es calcularà
-                quan tinguem les dades del bolet
-                i les condicions del terreny.
-            </p>
+            <div id="resultatZona"
+                style="margin-top:20px;">
+            </div>
 
         </div>
     `;
@@ -781,10 +798,10 @@ function mostrarPronosticZona() {
 
 function mostrarMillorsZones() {
 
-    const resultat =
-        document.getElementById("oracleResultat");
+    const resultat = document.getElementById("oracleResultat");
 
     resultat.innerHTML = `
+
         <div style="
             padding:20px;
             margin-top:20px;
@@ -794,13 +811,85 @@ function mostrarMillorsZones() {
 
             <h2>🔮 ON HAURIA D'ANAR?</h2>
 
+            <p><strong>Quin bolet vols buscar?</strong></p>
+
+            <select id="boletZones"
+                style="
+                    width:100%;
+                    padding:14px;
+                    font-size:17px;
+                    margin-bottom:15px;
+                ">
+
+                <option value="morchella_rotunda">
+                    🍄 Múrgola
+                </option>
+
+                <option value="craterellus_cornucopioides">
+                    🍄 Trompeta de la mort
+                </option>
+
+            </select>
+
+            <button
+                onclick="buscarMillorsZones()"
+                style="
+                    width:100%;
+                    padding:15px;
+                    font-size:17px;
+                "
+            >
+                🔮 Buscar oportunitats
+            </button>
+
+            <div id="resultatZones"
+                style="margin-top:20px;">
+            </div>
+
+        </div>
+    `;
+}
+
+
+function buscarMillorsZones() {
+
+    const bolet = document.getElementById("boletZones").value;
+    const resultat = document.getElementById("resultatZones");
+
+    let nomBolet = "";
+
+    if (bolet === "morchella_rotunda") {
+        nomBolet = "Múrgola";
+    }
+
+    if (bolet === "craterellus_cornucopioides") {
+        nomBolet = "Trompeta de la mort";
+    }
+
+    resultat.innerHTML = `
+
+        <div style="
+            padding:15px;
+            border-radius:12px;
+            background:white;
+        ">
+
+            <h3>🔮 ${nomBolet}</h3>
+
             <p>
-                Estem preparant el motor de pronòstic.
+                Encara no tenim prou dades per calcular
+                la probabilitat real.
             </p>
 
             <p>
-                Aviat l'Oracle buscarà les zones
-                amb les condicions més favorables.
+                📅 L'Oracle analitzarà també els propers
+                dies per detectar una possible finestra
+                favorable.
+            </p>
+
+            <p>
+                🌦️ Proper pas: incorporar meteorologia
+                i condicions de la zona.
             </p>
 
         </div>
