@@ -763,7 +763,7 @@ function mostrarPronosticZona() {
                     width:100%;
                     padding:14px;
                     font-size:17px;
-                    margin-bottom:15px;
+                    margin-bottom:18px;
                 ">
 
                 <option value="morchella_rotunda">
@@ -776,16 +776,35 @@ function mostrarPronosticZona() {
 
             </select>
 
-            <button
-                onclick="obtenirGPS()"
+
+            <p><strong>📍 On vols anar?</strong></p>
+
+            <input
+                id="pobleZona"
+                type="text"
+                placeholder="Escriu un poble o municipi"
                 style="
                     width:100%;
-                    padding:15px;
+                    box-sizing:border-box;
+                    padding:14px;
                     font-size:17px;
+                    margin-bottom:12px;
                 "
             >
-                📍 Utilitzar la meva ubicació
+
+
+            <button
+                onclick="analitzarZona()"
+                style="
+                    width:100%;
+                    padding:16px;
+                    font-size:18px;
+                    margin-top:8px;
+                "
+            >
+                🔮 ANALITZAR LA ZONA
             </button>
+
 
             <div id="resultatZona"
                 style="margin-top:20px;">
@@ -794,8 +813,84 @@ function mostrarPronosticZona() {
         </div>
     `;
 }
+function analitzarZona() {
+
+    const poble =
+        document.getElementById("pobleZona").value.trim();
+
+    const bolet =
+        document.getElementById("boletZona").value;
+
+    const resultat =
+        document.getElementById("resultatZona");
 
 
+    if (!poble) {
+
+        resultat.innerHTML = `
+            <div style="
+                padding:15px;
+                border-radius:12px;
+                background:#fff3cd;
+            ">
+                ⚠️ Escriu primer el poble o municipi.
+            </div>
+        `;
+
+        return;
+    }
+
+
+    let nomBolet = "";
+
+    if (bolet === "morchella_rotunda") {
+        nomBolet = "Múrgola";
+    }
+
+    if (bolet === "craterellus_cornucopioides") {
+        nomBolet = "Trompeta de la mort";
+    }
+
+
+    resultat.innerHTML = `
+
+        <div style="
+            padding:18px;
+            border-radius:12px;
+            background:white;
+        ">
+
+            <h3>🔮 ANÀLISI DE LA ZONA</h3>
+
+            <p>
+                <strong>📍 Zona:</strong> ${poble}
+            </p>
+
+            <p>
+                <strong>🍄 Bolet:</strong> ${nomBolet}
+            </p>
+
+            <hr>
+
+            <p>
+                🗓️ <strong>Avui:</strong>
+                encara no podem calcular el pronòstic real.
+            </p>
+
+            <p>
+                🔮 <strong>Proper pas:</strong>
+                analitzar les condicions de la zona i
+                la previsió dels propers dies.
+            </p>
+
+            <p>
+                📅 L'Oracle buscarà també una possible
+                <strong>finestra favorable</strong> de dies.
+            </p>
+
+        </div>
+    `;
+}
 function mostrarMillorsZones() {
 
     const resultat = document.getElementById("oracleResultat");
